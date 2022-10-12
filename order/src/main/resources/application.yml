@@ -5,6 +5,10 @@ server:
 spring:
   application:
     name: order
+    base-url: http://gateway:8080
+    pre-deposited-account-context: http://pre-deposited-account:8081
+    retail-account-context: http://retail-account:8083
+    retail-inventory-context: http://retail-inventory:8084
   jpa:
     hibernate:
       naming:

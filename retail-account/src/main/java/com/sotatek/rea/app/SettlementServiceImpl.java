@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sotatek.rea.app.external.OrderClientService;
+import com.sotatek.rea.app.external.RetailInventoryClientService;
 import com.sotatek.rea.config.AppRunningProperties;
 import com.sotatek.rea.config.util.GatewayConst;
 import com.sotatek.rea.domain.Settlement;
@@ -22,23 +25,20 @@ import lombok.extern.log4j.Log4j2;
 public class SettlementServiceImpl implements SettlementService{
 	
 	@Autowired
-	private AppRunningProperties appRunningProperties;
+	private AccountService accountService;
 	
 	@Autowired
-	private AccountService accountService;
+	private OrderClientService orderClientService;
+	
+	@Autowired
+	private RetailInventoryClientService retailInventoryClientService;
 	
 	@Override
 	public List<Settlement> jobHandle() throws Exception{
 		try {
-			ResponseDataDto orderResponse = Unirest.get(appRunningProperties.getBaseUrl() + "/order/settlement")
-				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
-				      .asObject(ResponseDataDto.class)
-				      .getBody();
+			ResponseDataDto orderResponse = orderClientService.findForSettlement();
 			
-			ResponseDataDto inventoryResponse = Unirest.get(appRunningProperties.getBaseUrl() + "/retail-inventory/settlement")
-				      .header("Authorization", "Bearer " + GatewayConst.TOKEN_ADMIN)
-				      .asObject(ResponseDataDto.class)
-				      .getBody();
+			ResponseDataDto inventoryResponse = retailInventoryClientService.findForSettlement();
 			
 			ResponseDataDto retailAccountResponse = accountService.findForSettlement();
 			
@@ -56,33 +56,38 @@ public class SettlementServiceImpl implements SettlementService{
 			
 			List<Map<String, Object>> productRes = (List<Map<String, Object>>) inventoryResponse.data; // quantity
 			
-			List<SettlementDto> retailRes = (List<SettlementDto>) retailAccountResponse.data;
+			List<SettlementDto> retails = (List<SettlementDto>) retailAccountResponse.data;
 			
-			for(Map<String, Object> product: productRes) {
-				for(Map<String, Object> order: orderRes) {
-					if(product.get("productId").equals(order.get("productId"))) {
-						product.put("amount", order.get("amount"));
-						break;
+			orderRes.stream()
+			.flatMap(order -> 
+				productRes.stream()
+				.filter(
+					product -> product.get("productId").equals(order.get("productId"))
+				)
+				.map(
+					product -> product.put("amount", order.get("amount"))
+				)
+			)
+			.collect(Collectors.toList());
+			
+			List<Settlement> settlements = productRes.stream()
+			.flatMap(product -> 
+				retails.stream()
+				.filter(
+					retail -> Double.parseDouble(product.get("retailId").toString()) == retail.getRetailId()
+				)
+				.filter(
+					retail -> Double.parseDouble(product.get("amount").toString()) == retail.getAmount()
+				)
+				.map(retail -> {
+					if(Double.parseDouble(product.get("amount").toString()) == retail.getAmount()) {
+						return Settlement.builder().createTime(new Date()).retailId(retail.getRetailId()).state("match").build();
+					} else {
+						return Settlement.builder().createTime(new Date()).retailId(retail.getRetailId()).state("unmatch").build();
 					}
-				}
-			}
-			List<Settlement> settlements = new ArrayList<>();
-			for(SettlementDto retail: retailRes) {
-				Settlement settlement = new Settlement();
-				settlement.retailId = retail.getRetailId();
-				for(Map<String, Object> product: productRes) {
-					if(Double.parseDouble(product.get("retailId").toString()) == retail.getRetailId()) {
-						if(Double.parseDouble(product.get("amount").toString()) == retail.getAmount()) {
-							settlement.state = "match";
-						} else {
-							settlement.state = "unmatch";
-						}
-						break;
-					}
-				}
-				settlement.createTime = new Date();
-				settlements.add(settlement);
-			}
+				})
+					
+			).collect(Collectors.toList());
 			return settlements;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

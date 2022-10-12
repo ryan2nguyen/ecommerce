@@ -53,4 +53,14 @@ public class RetailServiceImpl implements RetailService{
 		}
 	}
 
+	@Override
+	public ResponseDataDto<?> findByRetailId(Long retailId) {
+		try {
+			return new ResponseDataDto<Retail>(HttpStatus.OK, retailRepository.findById(retailId));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return new ResponseDataDto<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+	}
+
 }

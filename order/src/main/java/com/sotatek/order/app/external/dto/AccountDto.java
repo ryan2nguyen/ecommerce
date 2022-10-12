@@ -3,7 +3,7 @@ package com.sotatek.order.app.external.dto;
 import lombok.Builder;
 
 @Builder
-public class AccountRetailDto {
+public class AccountDto {
 
     public Long retailId;
 	

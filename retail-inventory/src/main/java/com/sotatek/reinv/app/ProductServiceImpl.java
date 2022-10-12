@@ -1,13 +1,16 @@
 package com.sotatek.reinv.app;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sotatek.reinv.app.external.RetailAccountClientService;
 import com.sotatek.reinv.domain.Product;
+import com.sotatek.reinv.domain.ProductHistory;
+import com.sotatek.reinv.infrastructure.repository.ProductHistoryReposity;
 import com.sotatek.reinv.infrastructure.repository.ProductReposity;
 import com.sotatek.reinv.ws.dto.ProductDto;
 import com.sotatek.reinv.ws.dto.ResponseDataDto;
@@ -22,16 +25,61 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ProductReposity productReposity;
 	
+	@Autowired
+	private ProductHistoryReposity productHistoryReposity;
+	
+	@Autowired
+	private RetailAccountClientService retailAccountClientService;
+	
 	@Override
 	public ResponseDataDto<?> add(List<ProductDto> productDtos) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			productDtos.forEach(product -> this.add(product));
+			return new ResponseDataDto<String>(HttpStatus.OK, "Done");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return new ResponseDataDto<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+	}
+	
+	private ResponseDataDto<?> add(ProductDto productDto) {
+		try {
+			ResponseDataDto response = retailAccountClientService.findByRetailId(productDto.retailId);
+			if(response.code != 200) {
+				throw new Exception(response.data.toString());
+			}
+			return new ResponseDataDto<Product>(HttpStatus.OK, productReposity.save(Product.builder()
+					.description(productDto.description)
+					.name(productDto.name)
+					.price(productDto.price)
+					.quantity(productDto.quantity)
+					.retailId(productDto.retailId)
+					.build()));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return new ResponseDataDto<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
 	}
 
 	@Override
-	public ResponseDataDto<?> increateInventory(ProductDto productDto, Long productId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseDataDto<?> increateInventory(ProductDto productDto) {
+		try {
+			Product savedProduct = productReposity.findById(productDto.productId);
+			savedProduct.quantity -= productDto.quantity;
+			if(savedProduct.quantity >= 0) {
+				productReposity.save(savedProduct);
+				
+				productHistoryReposity.save(ProductHistory.builder()
+						.createTime(new Date())
+						.quantity(savedProduct.quantity)
+						.type("increase")
+						.product(savedProduct)
+						.build());
+			}
+			return new ResponseDataDto<String>(HttpStatus.OK, "Done");
+		} catch (Exception e) {
+			return new ResponseDataDto<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
 	}
 
 	@Override
@@ -44,8 +92,25 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public ResponseDataDto<?> deductInventory(List<ProductDto> productDtos) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			productDtos.forEach(product -> {
+				Product savedProduct = productReposity.findById(product.productId);
+				savedProduct.quantity -= product.quantity;
+				if(savedProduct.quantity >= 0) {
+					productReposity.save(savedProduct);
+					
+					productHistoryReposity.save(ProductHistory.builder()
+							.createTime(new Date())
+							.quantity(product.quantity)
+							.type("buy")
+							.product(savedProduct)
+							.build());
+				}
+			});
+			return new ResponseDataDto<String>(HttpStatus.OK, "Done");
+		} catch (Exception e) {
+			return new ResponseDataDto<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
 	}
 
 }

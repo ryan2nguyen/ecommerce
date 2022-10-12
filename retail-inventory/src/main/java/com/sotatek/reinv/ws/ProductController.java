@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +22,23 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
+	@RequestMapping(value = "add", method = RequestMethod.POST)
+    public ResponseDataDto<?> manageProduct(@RequestBody List<ProductDto> productDtos) throws Exception{
+		return productService.add(productDtos);
+    }
+	
 	@RequestMapping(value = "fetch-price-by-id", method = RequestMethod.POST)
     public ResponseDataDto<?> fetchPriceById(@RequestBody List<ProductDto> productDtos) throws Exception {
         return productService.fetchPriceById(productDtos);
+    }
+	
+	@RequestMapping(value = "deduct-inventory", method = RequestMethod.POST)
+    public ResponseDataDto<?> deductInventory(@RequestBody List<ProductDto> productDtos) throws Exception {
+        return productService.deductInventory(productDtos);
+    }
+	
+	@RequestMapping(value = "increase-inventory", method = RequestMethod.POST)
+    public ResponseDataDto<?> deductInventory(@RequestBody ProductDto productDto) throws Exception {
+        return productService.increateInventory(productDto);
     }
 }

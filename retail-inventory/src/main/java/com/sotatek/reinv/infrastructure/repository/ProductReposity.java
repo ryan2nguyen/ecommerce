@@ -10,4 +10,6 @@ public interface ProductReposity {
 	public List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
 	
 	public Product findById(Long id);
+
+	public Product save(Product prodcut);
 }

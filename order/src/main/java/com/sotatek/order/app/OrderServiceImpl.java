@@ -2,23 +2,26 @@ package com.sotatek.order.app;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sotatek.order.app.external.AccountCustomerService;
-import com.sotatek.order.app.external.AccountRetailService;
-import com.sotatek.order.app.external.ProductService;
+import com.sotatek.order.app.external.PreDepositedAccountClientService;
+import com.sotatek.order.app.external.RetailAccountClientService;
+import com.sotatek.order.app.external.RetailInventoryClientService;
+import com.sotatek.order.app.external.dto.AccountDto;
+import com.sotatek.order.app.external.dto.OrderDto;
 import com.sotatek.order.app.external.dto.ProductDto;
 import com.sotatek.order.domain.Order;
 import com.sotatek.order.domain.OrderDetail;
 import com.sotatek.order.infrastructure.repository.OrderRepository;
 import com.sotatek.order.ws.dto.OrderDetailDto;
-import com.sotatek.order.ws.dto.OrderDto;
 import com.sotatek.order.ws.dto.ResponseDataDto;
 import com.sotatek.order.ws.dto.SettlementDto;
 
@@ -33,32 +36,13 @@ public class OrderServiceImpl implements OrderService {
 	private OrderRepository orderRepository;
 	
 	@Autowired
-	private ProductService productService;
+	private PreDepositedAccountClientService preDepositedAccountClientService;
 	
 	@Autowired
-	private AccountCustomerService accountCustomerService;
+	private RetailAccountClientService retailAccountClientService;
 	
 	@Autowired
-	private AccountRetailService accountRetailService;
-	
-	@Override
-	public ResponseDataDto<?> callbackState(OrderDto orderDto) {
-		try {
-			if(orderDto.orderId == null || orderDto.orderId <= 0) {
-				throw new Exception("orderId is in wrong format");
-			}
-			if(orderDto.state.isBlank()) {
-				throw new Exception("state is in wrong format");
-			}
-			Order order = orderRepository.findById(orderDto.orderId);
-			order.state = orderDto.state;
-			order.createTime = new Date();
-			orderRepository.save(order);
-			return new ResponseDataDto<Order>(HttpStatus.OK, order);
-		} catch (Exception e) {
-			return new ResponseDataDto<String>(HttpStatus.BAD_REQUEST, e.getMessage());
-		}
-	}
+	private RetailInventoryClientService retailInventoryClientService;
 
 	@Override
 	public ResponseDataDto<?> findForSettlement() {
@@ -84,9 +68,16 @@ public class OrderServiceImpl implements OrderService {
 			if(customerId == null || customerId <= 0) {
 				throw new Exception("Customer doesn't exist");
 			}
-			
 			Long totalAmount = 0L;
-			List<ProductDto> productDtos = productService.fetchPriceById(orderDetails);
+			ResponseDataDto resultProducts = retailInventoryClientService.fetchPriceById(
+					orderDetails.stream().map(detail -> ProductDto.builder()
+							.id(detail.productId)
+							.quantity(detail.quantity)
+							.build()).collect(Collectors.toList()));
+			if(resultProducts.code != HttpStatus.OK) {
+				throw new Exception(resultProducts.data.toString());
+			}
+			List<ProductDto> productDtos = (List<ProductDto>) resultProducts.data;
 			for (OrderDetailDto orderDetail : orderDetails) {
                 orderDetail.price = productDtos.stream().filter(product -> product.id == orderDetail.productId).findFirst().get().price;
 				
@@ -105,18 +96,33 @@ public class OrderServiceImpl implements OrderService {
 								.build()
 							).collect(Collectors.toList()))
 					.build());
-			
-			accountCustomerService.payOrder(customerId, totalAmount);
+			// String userId, OrderDto orderDto
+			preDepositedAccountClientService.payOrder(customerId.toString(), OrderDto.builder().orderId(savedOrder.id).totalAmount(totalAmount).build());
 			
 			// update state
 			savedOrder.state = "sold";
 			orderRepository.save(savedOrder);
 			
 			// receive amount
-			accountRetailService.receiveAmount(productDtos, totalAmount);
+			List<AccountDto> accountDtos = new ArrayList<>();
+			
+			Map<Object, Long> productSold = productDtos.stream()
+					.collect(Collectors.groupingBy(product -> product.retailId, Collectors.summingLong(product -> product.price * product.quantity)));
+			
+			List<Object> retailIds = new ArrayList<Object>(productSold.keySet());
+			for (Object retailId : retailIds) {
+				accountDtos.add(
+						AccountDto.builder()
+						.amount(productSold.get(retailId))
+						.orderId(savedOrder.id)
+						.retailId((Long)retailId)
+						.build()
+						);
+			}
+			retailAccountClientService.receiveAmount(accountDtos);
 			
 			// deducted inventory
-			productService.deductInventory(productDtos);
+			retailInventoryClientService.deductInventory(productDtos);
 			
 			return new ResponseDataDto<Order>(HttpStatus.OK, savedOrder);
 		} catch (Exception e) {

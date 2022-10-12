@@ -38,6 +38,7 @@ public class OrderRepositoryImpl implements OrderRepository{
 	public Order save(Order order) {
 		OrderEntity orderEntity = jpaOrderRepository.save(
 			OrderEntity.builder()
+			   .id(order.id)
 		       .totalAmount(order.totalAmount)
 			   .customerId(order.customerId)
 			   .createTime(new Date())

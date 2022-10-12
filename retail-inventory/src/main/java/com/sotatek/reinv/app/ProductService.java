@@ -10,7 +10,7 @@ public interface ProductService {
 
 	public ResponseDataDto<?> add(List<ProductDto> productDtos);
 	
-	public ResponseDataDto<?> increateInventory(ProductDto productDto, Long productId);
+	public ResponseDataDto<?> increateInventory(ProductDto productDto);
 	
 	public ResponseDataDto<?> fetchPriceById(List<ProductDto> productDtos);
 	

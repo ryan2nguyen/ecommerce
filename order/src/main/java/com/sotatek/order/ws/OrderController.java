@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sotatek.order.app.OrderService;
 import com.sotatek.order.ws.dto.OrderDetailDto;
-import com.sotatek.order.ws.dto.OrderDto;
 import com.sotatek.order.ws.dto.ResponseDataDto;
 
 @RestController
@@ -29,10 +28,5 @@ public class OrderController {
 	@RequestMapping(value = "find-for-settlement", method = RequestMethod.GET)
     public ResponseDataDto<?> findForSettlement() throws Exception {
         return orderService.findForSettlement();
-    }
-	
-	@RequestMapping(value = "callback-state", method = RequestMethod.POST)
-    public ResponseDataDto<?> createOrder(@RequestBody OrderDto request) throws Exception {
-        return orderService.callbackState(request);
     }
 }

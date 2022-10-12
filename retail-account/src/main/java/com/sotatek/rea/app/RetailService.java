@@ -8,4 +8,6 @@ import com.sotatek.rea.ws.dto.RetailDto;
 public interface RetailService {
 
 	public ResponseDataDto<?> add(List<RetailDto> retailDtos);
+	
+	public ResponseDataDto<?> findByRetailId(Long retailId);
 }
