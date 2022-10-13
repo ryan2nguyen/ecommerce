@@ -10,15 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountHistory {
-	
-	public Long id;
+    
+    public Long id;
 
     public String type;
-	
+    
     public Date createTime;
-	
+    
     public Long amount;
-	
+    
     public Long orderId;
     
     public Customer customer;

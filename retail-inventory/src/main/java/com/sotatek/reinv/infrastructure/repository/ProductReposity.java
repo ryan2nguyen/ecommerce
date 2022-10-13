@@ -7,9 +7,9 @@ import com.sotatek.reinv.ws.dto.SettlementDto;
 
 public interface ProductReposity {
 
-	public List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
-	
-	public Product findById(Long id);
+    public List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
+    
+    public Product findById(Long id);
 
-	public Product save(Product prodcut);
+    public Product save(Product prodcut);
 }

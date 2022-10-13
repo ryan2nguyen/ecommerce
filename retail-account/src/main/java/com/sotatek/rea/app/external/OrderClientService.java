@@ -15,6 +15,6 @@ import feign.RequestLine;
 @FeignClient(name = "order")
 public interface OrderClientService {
 
-	@GetMapping(value = "/find-for-settlement")
-	public ResponseDataDto<?> findForSettlement();
+    @GetMapping(value = "/find-for-settlement")
+    public ResponseDataDto<?> findForSettlement();
 }

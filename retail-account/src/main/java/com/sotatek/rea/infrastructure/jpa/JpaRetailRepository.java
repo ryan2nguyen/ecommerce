@@ -15,13 +15,13 @@ import com.sotatek.rea.infrastructure.entity.RetailEntity;
 @Repository
 public interface JpaRetailRepository extends JpaRepository<RetailEntity, Long> {
 
-	@QueryHints(value = {
+    @QueryHints(value = {
             @QueryHint(name = org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE, value = "" + Integer.MIN_VALUE),
             @QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "false"),
             @QueryHint(name = org.hibernate.jpa.QueryHints.HINT_READONLY, value = "true")
     })
     @Query("SELECT r FROM retail r")
     Stream<RetailEntity> getAll();
-	
-	RetailEntity findByToken(@Param("token") String token);
+    
+    RetailEntity findByToken(@Param("token") String token);
 }

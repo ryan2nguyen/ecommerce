@@ -9,11 +9,11 @@ import com.sotatek.rea.domain.Account;
 import com.sotatek.rea.ws.dto.SettlementDto;
 
 public interface AccountRepository {
-	
-	List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
-	
-	Account findByRetailId(Long retailId);
-	
-	Account save(Account account);
-	
+    
+    List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
+    
+    Account findByRetailId(Long retailId);
+    
+    Account save(Account account);
+    
 }

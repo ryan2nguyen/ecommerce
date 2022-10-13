@@ -18,11 +18,11 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("account")
 public class AccountController {
 
-	@Autowired
-	private AccountService accountService;
-	
-	@RequestMapping(value = "pay-order", method = RequestMethod.POST)
+    @Autowired
+    private AccountService accountService;
+    
+    @RequestMapping(value = "pay-order", method = RequestMethod.POST)
     public ResponseDataDto<?> payOrder(@RequestHeader(value="userId") String userId, @RequestBody OrderDto request) throws Exception {
-		return accountService.payOrder(request, Long.parseLong(userId));
+        return accountService.payOrder(request, Long.parseLong(userId));
     }
 }

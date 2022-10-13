@@ -4,5 +4,5 @@ import com.sotatek.prda.domain.AccountHistory;
 
 public interface AccountHistoryRepository {
 
-	AccountHistory save(AccountHistory account);
+    AccountHistory save(AccountHistory account);
 }

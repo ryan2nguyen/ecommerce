@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.HandlerStrategies;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sotatek.gateway.config.AppRunningProperties;
 import com.sotatek.gateway.model.User;
 import com.sotatek.gateway.util.GatewayConst;
 
@@ -23,63 +24,72 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Component
 public class AuthenUserFilter extends AbstractGatewayFilterFactory<AuthenUserFilter.Config> implements Serializable{
-	private final java.util.List<HttpMessageReader<?>> messageReaders;
-	
-	@Autowired
+    private final java.util.List<HttpMessageReader<?>> messageReaders;
+    
+    @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
-	
-	public AuthenUserFilter() {
+    
+    @Autowired
+    private AppRunningProperties appRunningProperties;
+    
+    public AuthenUserFilter() {
         super(Config.class);
         this.messageReaders = HandlerStrategies.withDefaults().messageReaders();
     }
-	
-	public GatewayFilter apply(final Config config) {
+    
+    public GatewayFilter apply(final Config config) {
         return (exchange, chain) -> {
-        	log.info("AuthenFilter");
-        	ServerHttpRequest request = exchange.getRequest();
-        	String token = request.getHeaders().getFirst("Authorization");
-        	if(StringUtils.isEmpty(token)) {
-        		ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.UNAUTHORIZED);
+            log.info("AuthenFilter");
+            ServerHttpRequest request = exchange.getRequest();
+            String token = request.getHeaders().getFirst("Authorization");
+            if(StringUtils.isEmpty(token)) {
+                ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.UNAUTHORIZED);
                 ServerWebExchangeUtils.setAlreadyRouted(exchange);
                 return exchange.getResponse().setComplete();
-        	}
-        	token = token.replace("Bearer ", "");
-        	if(token.equals(GatewayConst.TOKEN_ADMIN)) {
-        		
-        	} else {
-        		Object userObject = redisTemplate.opsForValue().get(token);
-        		if(userObject == null) {
-        			ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.NO_CONTENT);
+            }
+            token = token.replace("Bearer ", "");
+            if(token.equals(GatewayConst.TOKEN_ADMIN)) {
+                
+            } else {
+                Object userObject = redisTemplate.opsForValue().get(token);
+                if(userObject == null) {
+                    ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.NO_CONTENT);
                     ServerWebExchangeUtils.setAlreadyRouted(exchange);
                     return exchange.getResponse().setComplete();
-        		}
-        		User user = JSONObject.parseObject(userObject.toString(), User.class);
-        		exchange.getAttributes().put(GatewayConst.IS_ADMIN, false);
-        		String serviceId = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_PREDICATE_MATCHED_PATH_ROUTE_ID_ATTR).toString();
-        		log.info("serviceId: {}", serviceId);
-        		// TODO authen service
-//        		if(user.type.equals("customer")) {
-//        			if(serviceId.indexOf("pre-deposited-account") == -1 && serviceId.indexOf("retail-inventory") == -1) {
-//        				ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.UNAUTHORIZED);
-//                        ServerWebExchangeUtils.setAlreadyRouted(exchange);
-//                        return exchange.getResponse().setComplete();
-//        			}
-//        		} else if(user.type.equals("retail")) {
-//        			if(serviceId.indexOf("retail-inventory") == -1) {
-//        				ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.UNAUTHORIZED);
-//                        ServerWebExchangeUtils.setAlreadyRouted(exchange);
-//                        return exchange.getResponse().setComplete();
-//        			}
-//        		}
-        		
-        		exchange.getAttributes().put(GatewayConst.USER_ID, user.userId);
-        	}
-        	
-        	return chain.filter(exchange);
+                }
+                User user = JSONObject.parseObject(userObject.toString(), User.class);
+                exchange.getAttributes().put(GatewayConst.IS_ADMIN, false);
+                String serviceId = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_PREDICATE_MATCHED_PATH_ROUTE_ID_ATTR).toString();
+                String urlRequest = exchange.getRequest().getPath().toString();
+                // TODO authen service
+                
+                switch (user.type) {
+                case "customer":
+                    if(!appRunningProperties.getCustomerUrl().contains(urlRequest)) {
+                        ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.UNAUTHORIZED);
+                        ServerWebExchangeUtils.setAlreadyRouted(exchange);
+                        return exchange.getResponse().setComplete();
+                    }
+                    break;
+                case "retail":
+                    if(!appRunningProperties.getRetailUrl().contains(urlRequest)) {
+                        ServerWebExchangeUtils.setResponseStatus(exchange, HttpStatus.UNAUTHORIZED);
+                        ServerWebExchangeUtils.setAlreadyRouted(exchange);
+                        return exchange.getResponse().setComplete();
+                    }
+                    break;
+                default:
+                    break;
+                }
+                
+                exchange.getAttributes().put(GatewayConst.USER_ID, user.userId);
+            }
+            
+            return chain.filter(exchange);
         };
     }
-	
-	public static class Config {
+    
+    public static class Config {
         private Class<?> bodyClass;
 
         public Class<?> getBodyClass() {

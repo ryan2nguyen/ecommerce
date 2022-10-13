@@ -8,13 +8,13 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 public class User {
-	public long userId;
-	
-	public String type = "customer"; 
-	
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return JSON.toJSONString(this);
-	}
+    public long userId;
+    
+    public String type = "customer"; 
+    
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return JSON.toJSONString(this);
+    }
 }

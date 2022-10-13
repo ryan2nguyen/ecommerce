@@ -6,8 +6,8 @@ import lombok.Builder;
 
 @Builder
 public class Customer {
-	
-	public Long id;
+    
+    public Long id;
 
     public String name;
     

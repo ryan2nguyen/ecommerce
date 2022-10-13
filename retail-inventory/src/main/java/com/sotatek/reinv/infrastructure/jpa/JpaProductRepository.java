@@ -11,9 +11,9 @@ import com.sotatek.reinv.ws.dto.SettlementDto;
 
 @Repository
 public interface JpaProductRepository extends JpaRepository<ProductEntity, Long> {
-	
-	@Query(
-		value = "SELECT ph.productId, SUM(ph.quantity) as quantity, p.retailId FROM product_history ph, product p WHERE ph.productId = p.id and ph.`type` = ?1 and DATE(ph.createTime)=?2 GROUP BY ph.productId", 
-		nativeQuery = true)
-	List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
+    
+    @Query(
+        value = "SELECT ph.productId, SUM(ph.quantity) as quantity, p.retailId FROM product_history ph, product p WHERE ph.productId = p.id and ph.`type` = ?1 and DATE(ph.createTime)=?2 GROUP BY ph.productId", 
+        nativeQuery = true)
+    List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
 }

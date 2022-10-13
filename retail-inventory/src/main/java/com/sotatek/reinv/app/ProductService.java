@@ -8,13 +8,13 @@ import com.sotatek.reinv.ws.dto.ResponseDataDto;
 
 public interface ProductService {
 
-	public ResponseDataDto<?> add(List<ProductDto> productDtos);
-	
-	public ResponseDataDto<?> increateInventory(ProductDto productDto);
-	
-	public ResponseDataDto<?> fetchPriceById(List<ProductDto> productDtos);
-	
-	public ResponseDataDto<?> deductInventory(List<ProductDto> productDtos);
-	
-	
+    public ResponseDataDto<?> add(List<ProductDto> productDtos);
+    
+    public ResponseDataDto<?> increateInventory(ProductDto productDto);
+    
+    public ResponseDataDto<?> fetchPriceById(List<ProductDto> productDtos);
+    
+    public ResponseDataDto<?> deductInventory(List<ProductDto> productDtos);
+    
+    public ResponseDataDto<?> findForSettlement();
 }

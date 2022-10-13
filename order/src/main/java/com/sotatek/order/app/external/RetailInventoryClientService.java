@@ -18,13 +18,13 @@ import feign.RequestLine;
 @FeignClient(name = "retail-inventory")
 public interface RetailInventoryClientService {
 
-	
-	@PostMapping(value = "/product/fetch-price-by-id")
+    
+    @PostMapping(value = "/product/fetch-price-by-id")
     @Headers("Content-Type: application/json")
-	public ResponseDataDto<?> fetchPriceById(@RequestBody List<ProductDto> productDtos);
-	
-	@PostMapping(value = "/product/deduct-inventory")
+    public ResponseDataDto<?> fetchPriceById(@RequestBody List<ProductDto> productDtos);
+    
+    @PostMapping(value = "/product/deduct-inventory")
     @Headers("Content-Type: application/json")
-	public ResponseDataDto<?> deductInventory(@RequestBody List<ProductDto> productDtos);
+    public ResponseDataDto<?> deductInventory(@RequestBody List<ProductDto> productDtos);
 
 }

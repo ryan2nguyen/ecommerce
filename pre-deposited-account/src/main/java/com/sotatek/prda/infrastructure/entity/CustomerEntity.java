@@ -30,10 +30,10 @@ import lombok.NoArgsConstructor;
 @Table(schema = "customer")
 public class CustomerEntity {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-	
+    
     @Column(name = "name")
     public String name;
     
@@ -48,11 +48,11 @@ public class CustomerEntity {
     
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-	public List<AccountEntity> accountEntityies;
+    public List<AccountEntity> accountEntityies;
     
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-	public List<AccountHistoryEntity> accountHistoryEntityies;
+    public List<AccountHistoryEntity> accountHistoryEntityies;
     
     @Override
     public String toString() {

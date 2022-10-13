@@ -5,11 +5,11 @@ import lombok.Builder;
 @Builder
 public class ProductDto {
 
-	public Long productId;
-	
-	public Integer quantity;
-	
-	public Long price;
-	
-	public Long retailId;
+    public Long productId;
+    
+    public Integer quantity;
+    
+    public Long price;
+    
+    public Long retailId;
 }

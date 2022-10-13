@@ -4,7 +4,7 @@ import javax.persistence.Column;
 
 public class RetailDto {
 
-	public String name;
+    public String name;
     
     public String email;
     

@@ -19,10 +19,10 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("account")
 public class AccountController {
 
-	@Autowired
-	private AccountService accountService;
-	
-	@RequestMapping(value = "receive-amount", method = RequestMethod.POST)
+    @Autowired
+    private AccountService accountService;
+    
+    @RequestMapping(value = "receive-amount", method = RequestMethod.POST)
     public ResponseDataDto<?> receiveAmount(@RequestBody List<AccountDto> request) throws Exception {
         return accountService.receiveAmount(request);
     }

@@ -21,15 +21,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductHistory {
 
-	public Long id;
-	
-	public Product product;
-	
+    public Long id;
+    
+    public Product product;
+    
     public String type;
-	
+    
     public Date createTime;
-	
+    
     public Integer quantity;
-	
+    
     public Long orderId;
 }

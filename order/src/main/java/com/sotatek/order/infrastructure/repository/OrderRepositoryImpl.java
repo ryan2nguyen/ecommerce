@@ -23,65 +23,66 @@ import com.sotatek.order.ws.dto.SettlementDto;
 @Component
 public class OrderRepositoryImpl implements OrderRepository{
 
-	@Autowired
-	private JpaOrderRepository jpaOrderRepository;
-	
-	@Autowired
-	private JpaOrderDetailRepository jpaOrderDetailRepository;
-	
-	@Override
-	public Order findById(Long id) {
-		return toDomain(jpaOrderRepository.findById(id).get());
-	}
+    @Autowired
+    private JpaOrderRepository jpaOrderRepository;
+    
+    @Autowired
+    private JpaOrderDetailRepository jpaOrderDetailRepository;
+    
+    @Override
+    public Order findById(Long id) {
+        return toDomain(jpaOrderRepository.findById(id).get());
+    }
 
-	@Override
-	public Order save(Order order) {
-		OrderEntity orderEntity = jpaOrderRepository.save(
-			OrderEntity.builder()
-			   .id(order.id)
-		       .totalAmount(order.totalAmount)
-			   .customerId(order.customerId)
-			   .createTime(new Date())
-			   .state(order.state)
-			   .build()
-		);
-		
-		List<OrderDetailEntity> orderDetailEntities = order.orderDetails.stream()
-				      .map(detail -> OrderDetailEntity.builder()
-				    	  .id(detail.id)
-				          .price(detail.price)
-				          .productId(detail.productId)
-				          .quantity(detail.quantity)
-				          .build()
-					  ).collect(Collectors.toList());
-		List<OrderDetailEntity> savedDetail = jpaOrderDetailRepository.saveAll(orderDetailEntities);
-		orderEntity.orderDetails = savedDetail;
-		return toDomain(orderEntity);
-	}
-	
-	private Order toDomain(OrderEntity orderEntity) {
-		if(orderEntity == null) return null;
-		return Order.builder()
-				   .id(orderEntity.id)
-			       .customerId(orderEntity.customerId)
-				   .state(orderEntity.state)
-				   .totalAmount(orderEntity.totalAmount)
-				   .createTime(orderEntity.createTime)
-				   .orderDetails(orderEntity.orderDetails.stream()
-				      .map(detail -> OrderDetail.builder()
-				    	  .id(detail.id)
-				          .price(detail.getPrice())
-				          .productId(detail.productId)
-				          .quantity(detail.quantity)
-				          .build()
-					  ).collect(Collectors.toList())
-				   )
-				   .build();
-	}
+    @Override
+    public Order save(Order order) {
+        OrderEntity orderEntity = jpaOrderRepository.save(
+            OrderEntity.builder()
+               .id(order.id)
+               .totalAmount(order.totalAmount)
+               .customerId(order.customerId)
+               .createTime(new Date())
+               .state(order.state)
+               .build()
+        );
+        
+        List<OrderDetailEntity> orderDetailEntities = order.orderDetails.stream()
+                      .map(detail -> OrderDetailEntity.builder()
+                          .id(detail.id)
+                          .price(detail.price)
+                          .productId(detail.productId)
+                          .quantity(detail.quantity)
+                          .order(OrderEntity.builder().id(orderEntity.id).build())
+                          .build()
+                      ).collect(Collectors.toList());
+        List<OrderDetailEntity> savedDetail = jpaOrderDetailRepository.saveAll(orderDetailEntities);
+        orderEntity.orderDetails = savedDetail;
+        return toDomain(orderEntity);
+    }
+    
+    private Order toDomain(OrderEntity orderEntity) {
+        if(orderEntity == null) return null;
+        return Order.builder()
+                   .id(orderEntity.id)
+                   .customerId(orderEntity.customerId)
+                   .state(orderEntity.state)
+                   .totalAmount(orderEntity.totalAmount)
+                   .createTime(orderEntity.createTime)
+                   .orderDetails(orderEntity.orderDetails.stream()
+                      .map(detail -> OrderDetail.builder()
+                          .id(detail.id)
+                          .price(detail.getPrice())
+                          .productId(detail.productId)
+                          .quantity(detail.quantity)
+                          .build()
+                      ).collect(Collectors.toList())
+                   )
+                   .build();
+    }
 
-	@Override
-	public List<SettlementDto> findByStateAndCreateTime(String state, String createTime) {
-		// TODO Auto-generated method stub
-		return jpaOrderRepository.findByStateAndCreateTime(state, createTime);
-	}
+    @Override
+    public List<SettlementDto> findByStateAndCreateTime(String state, String createTime) {
+        // TODO Auto-generated method stub
+        return jpaOrderRepository.findByStateAndCreateTime(state, createTime);
+    }
 }

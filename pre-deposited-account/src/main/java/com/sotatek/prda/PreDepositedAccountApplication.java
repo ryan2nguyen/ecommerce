@@ -12,8 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableFeignClients
 public class PreDepositedAccountApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PreDepositedAccountApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PreDepositedAccountApplication.class, args);
+    }
 
 }

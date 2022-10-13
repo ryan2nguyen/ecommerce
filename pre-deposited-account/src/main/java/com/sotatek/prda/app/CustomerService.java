@@ -7,10 +7,10 @@ import com.sotatek.prda.ws.dto.CustomerDto;
 import com.sotatek.prda.ws.dto.ResponseDataDto;
 
 public interface CustomerService {
-	
-	public ResponseDataDto<?> deposit(AccountDto accountDto, Long customerId);
-	
-	public ResponseDataDto<?> add(List<CustomerDto> customers);
-	
-	
+    
+    public ResponseDataDto<?> deposit(AccountDto accountDto, Long customerId);
+    
+    public ResponseDataDto<?> add(List<CustomerDto> customers);
+    
+    
 }

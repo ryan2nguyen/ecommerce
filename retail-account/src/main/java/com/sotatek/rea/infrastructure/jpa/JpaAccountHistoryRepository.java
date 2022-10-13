@@ -7,5 +7,5 @@ import com.sotatek.rea.infrastructure.entity.AccountHistoryEntity;
 
 @Repository
 public interface JpaAccountHistoryRepository extends JpaRepository<AccountHistoryEntity, Long> {
-	
+    
 }

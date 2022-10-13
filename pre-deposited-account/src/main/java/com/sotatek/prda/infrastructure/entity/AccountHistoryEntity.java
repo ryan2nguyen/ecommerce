@@ -29,23 +29,23 @@ import lombok.NoArgsConstructor;
 @Entity(name = "account_history")
 @Table(schema = "account_history")
 public class AccountHistoryEntity {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-	
-	@ManyToOne
+    
+    @ManyToOne
     @JoinColumn(name = "customerId")
-	public CustomerEntity customer;
-	
-	@Column(name = "type")
+    public CustomerEntity customer;
+    
+    @Column(name = "type")
     public String type;
-	
-	@Column(name = "createTime")
+    
+    @Column(name = "createTime")
     public Date createTime;
-	
-	@Column(name = "amount")
+    
+    @Column(name = "amount")
     public Long amount;
-	
-	@Column(name = "orderId")
+    
+    @Column(name = "orderId")
     public Long orderId;
 }

@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-	
-	public Long id;
+    
+    public Long id;
 
-	public Long customerId;
-	
-	public Long totalAmount;
-	
-	public String state;
-	
-	public Date createTime;
-	
-	public List<OrderDetail> orderDetails;
+    public Long customerId;
+    
+    public Long totalAmount;
+    
+    public String state;
+    
+    public Date createTime;
+    
+    public List<OrderDetail> orderDetails;
 }

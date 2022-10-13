@@ -25,23 +25,23 @@ import lombok.NoArgsConstructor;
 @Table(schema = "product_history")
 public class ProductHistoryEntity {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-	
-	@ManyToOne
+    
+    @ManyToOne
     @JoinColumn(name = "productId")
-	public ProductEntity product;
-	
-	@Column(name = "type")
+    public ProductEntity product;
+    
+    @Column(name = "type")
     public String type;
-	
-	@Column(name = "createTime")
+    
+    @Column(name = "createTime")
     public Date createTime;
-	
-	@Column(name = "quantity")
+    
+    @Column(name = "quantity")
     public Integer quantity;
-	
-	@Column(name = "orderId")
+    
+    @Column(name = "orderId")
     public Long orderId;
 }

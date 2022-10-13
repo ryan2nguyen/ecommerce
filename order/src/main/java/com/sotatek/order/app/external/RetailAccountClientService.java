@@ -14,7 +14,7 @@ import feign.RequestLine;
 @FeignClient(name = "retail-account")
 public interface RetailAccountClientService {
 
-	@PostMapping(value = "/account/receive-amount")
-	@Headers("Content-Type: application/json")
-	public ResponseDataDto<?> receiveAmount(List<AccountDto> request);
+    @PostMapping(value = "/account/receive-amount")
+    @Headers("Content-Type: application/json")
+    public ResponseDataDto<?> receiveAmount(List<AccountDto> request);
 }

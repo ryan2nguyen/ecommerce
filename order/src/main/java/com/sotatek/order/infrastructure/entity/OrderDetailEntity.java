@@ -21,20 +21,20 @@ import lombok.NoArgsConstructor;
 @Entity(name = "order_detail")
 @Table(schema = "order_detail")
 public class OrderDetailEntity {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-	
-	@ManyToOne
+    
+    @ManyToOne
     @JoinColumn(name = "orderId")
-	public OrderEntity order;
-	
-	@Column(name = "price")
+    public OrderEntity order;
+    
+    @Column(name = "price")
     public Long price;
-	
-	@Column(name = "productId")
+    
+    @Column(name = "productId")
     public Long productId;
-	
-	@Column(name = "quantity")
+    
+    @Column(name = "quantity")
     public Integer quantity;
 }

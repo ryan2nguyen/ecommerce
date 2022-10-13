@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class User {
 
-	public long userId;
-	
-	public String type; 
-	
+    public long userId;
+    
+    public String type; 
+    
 }

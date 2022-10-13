@@ -13,12 +13,12 @@ import com.sotatek.rea.ws.dto.SettlementDto;
 
 @Repository
 public interface JpaAccountRepository extends JpaRepository<AccountEntity, Long> {
-	
-	AccountEntity findByRetailId(@Param("retailId") Long retailId);
-	
-	@Query(
-			value = "SELECT ah.retailId, SUM(ah.amount) as amount FROM account_history ah WHERE ah.`type` = ?1 and DATE(ah.createTime) = ?2 GROUP BY ah.retailId", 
-			nativeQuery = true)
-	List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
-	
+    
+    AccountEntity findByRetailId(@Param("retailId") Long retailId);
+    
+    @Query(
+            value = "SELECT ah.retailId, SUM(ah.amount) as amount FROM account_history ah WHERE ah.`type` = ?1 and DATE(ah.createTime) = ?2 GROUP BY ah.retailId", 
+            nativeQuery = true)
+    List<SettlementDto> findByTypeAndCreateTime(String type, String createTime);
+    
 }

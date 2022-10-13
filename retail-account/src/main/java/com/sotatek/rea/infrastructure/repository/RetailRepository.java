@@ -7,11 +7,11 @@ import com.sotatek.rea.domain.Retail;
 
 public interface RetailRepository {
 
-	public List<Retail> getAll();
-	
+    public List<Retail> getAll();
+    
     public Retail findByToken(String token);
-	
-	public Retail save(Retail retail);
-	
-	public Retail findById(Long retailId);
+    
+    public Retail save(Retail retail);
+    
+    public Retail findById(Long retailId);
 }

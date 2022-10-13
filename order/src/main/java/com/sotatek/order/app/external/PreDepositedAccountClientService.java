@@ -13,16 +13,16 @@ import feign.RequestLine;
 //@FeignClient(name = "pre-deposited-account")
 //public interface PreDepositedAccountClientService {
 //
-//	
-//	@RequestLine("POST /pay-order")
+//    
+//    @RequestLine("POST /pay-order")
 //    @Headers("Content-Type: application/json")
-//	public ResponseDataDto<?> payOrder(@RequestHeader("userId") String userId, OrderDto orderDto);
+//    public ResponseDataDto<?> payOrder(@RequestHeader("userId") String userId, OrderDto orderDto);
 //}
 
 @FeignClient(name = "pre-deposited-account")
 public interface PreDepositedAccountClientService {
 
-	@PostMapping(value = "/account/pay-order")
-	@Headers("Content-Type: application/json")
-	public ResponseDataDto<?> payOrder(@RequestHeader("userId") String userId, OrderDto orderDto);
+    @PostMapping(value = "/account/pay-order")
+    @Headers("Content-Type: application/json")
+    public ResponseDataDto<?> payOrder(@RequestHeader("userId") String userId, OrderDto orderDto);
 }

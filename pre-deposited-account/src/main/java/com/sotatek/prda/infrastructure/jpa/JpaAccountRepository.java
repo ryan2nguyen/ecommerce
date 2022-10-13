@@ -8,6 +8,6 @@ import com.sotatek.prda.infrastructure.entity.AccountEntity;
 
 @Repository
 public interface JpaAccountRepository extends JpaRepository<AccountEntity, Long> {
-	
-	AccountEntity findByCustomerId(@Param("customerId") Long customerId);
+    
+    AccountEntity findByCustomerId(@Param("customerId") Long customerId);
 }

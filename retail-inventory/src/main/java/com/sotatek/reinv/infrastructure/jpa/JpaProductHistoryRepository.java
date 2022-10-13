@@ -7,5 +7,5 @@ import com.sotatek.reinv.infrastructure.entity.ProductHistoryEntity;
 
 @Repository
 public interface JpaProductHistoryRepository extends JpaRepository<ProductHistoryEntity, Long> {
-	
+    
 }

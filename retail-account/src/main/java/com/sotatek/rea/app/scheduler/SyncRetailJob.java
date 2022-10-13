@@ -15,22 +15,22 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Component
 public class SyncRetailJob {
-	
-	@Autowired
-	private RetailRepository retailRepository;
-	
-	@Autowired
+    
+    @Autowired
+    private RetailRepository retailRepository;
+    
+    @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
 
-	@Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 5000)
     @Transactional(readOnly = true)
     public void running() {
-		try {
-			retailRepository.getAll().forEach(retail -> {
-				redisTemplate.opsForValue().set(retail.token, User.builder().userId(retail.id).type("retail").build().toString(), 5, TimeUnit.MINUTES);
-			});
+        try {
+            retailRepository.getAll().forEach(retail -> {
+                redisTemplate.opsForValue().set(retail.token, User.builder().userId(retail.id).type("retail").build().toString(), 5, TimeUnit.MINUTES);
+            });
         } catch (Exception e) {
             log.error("[SCHEDULE] " + e);
         }
-	}
+    }
 }

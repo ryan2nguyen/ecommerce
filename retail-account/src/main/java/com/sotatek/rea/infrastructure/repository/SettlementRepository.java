@@ -5,5 +5,5 @@ import com.sotatek.rea.domain.Settlement;
 
 public interface SettlementRepository {
 
-	Settlement save(Settlement account);
+    Settlement save(Settlement account);
 }

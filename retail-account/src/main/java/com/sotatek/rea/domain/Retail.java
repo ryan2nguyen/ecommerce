@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Retail {
-	
-	public Long id;
+    
+    public Long id;
 
     public String name;
     

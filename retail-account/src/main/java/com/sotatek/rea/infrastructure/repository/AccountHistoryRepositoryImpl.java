@@ -15,37 +15,37 @@ import lombok.extern.log4j.Log4j2;
 @Component
 @Log4j2
 public class AccountHistoryRepositoryImpl implements AccountHistoryRepository {
-	
-	@Autowired
-	private JpaAccountHistoryRepository jpaAccountHistoryRepository;
-	
-	@Autowired
-	private JpaRetailRepository jpaRetailRepository;
-	
-	@Override
-	public AccountHistory save(AccountHistory accountHistory) {
-		return toDomain(jpaAccountHistoryRepository.save(
-			       AccountHistoryEntity.builder()
-			       .id(accountHistory.id)
-			       .amount(accountHistory.amount)
-			       .createTime(new Date())
-			       .retail(jpaRetailRepository.findById(accountHistory.retail.id).get())
-			       .type(accountHistory.type)
-			       .orderId(accountHistory.orderId)
-			       .build()
-			   ));
-	}
-	
-	private AccountHistory toDomain(AccountHistoryEntity entity) {
-		if(entity == null) return null;
-		return AccountHistory.builder()
-				   .id(entity.id)
-			       .amount(entity.amount)
-			       .createTime(new Date())
-			       .type(entity.type)
-			       .orderId(entity.orderId)
-			       .build();
-	}
+    
+    @Autowired
+    private JpaAccountHistoryRepository jpaAccountHistoryRepository;
+    
+    @Autowired
+    private JpaRetailRepository jpaRetailRepository;
+    
+    @Override
+    public AccountHistory save(AccountHistory accountHistory) {
+        return toDomain(jpaAccountHistoryRepository.save(
+                   AccountHistoryEntity.builder()
+                   .id(accountHistory.id)
+                   .amount(accountHistory.amount)
+                   .createTime(new Date())
+                   .retail(jpaRetailRepository.findById(accountHistory.retail.id).get())
+                   .type(accountHistory.type)
+                   .orderId(accountHistory.orderId)
+                   .build()
+               ));
+    }
+    
+    private AccountHistory toDomain(AccountHistoryEntity entity) {
+        if(entity == null) return null;
+        return AccountHistory.builder()
+                   .id(entity.id)
+                   .amount(entity.amount)
+                   .createTime(new Date())
+                   .type(entity.type)
+                   .orderId(entity.orderId)
+                   .build();
+    }
 
-	
+    
 }

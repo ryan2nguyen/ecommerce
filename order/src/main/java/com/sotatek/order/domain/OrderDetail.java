@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDetail {
-	
-	public Long id;
+    
+    public Long id;
 
     public Long price;
-	
+    
     public Long productId;
-	
+    
     public Integer quantity;
 }

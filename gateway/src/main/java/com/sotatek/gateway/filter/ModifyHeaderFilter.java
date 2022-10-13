@@ -24,39 +24,39 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Component
 public class ModifyHeaderFilter extends AbstractGatewayFilterFactory<ModifyHeaderFilter.Config> implements Serializable{
-	private final java.util.List<HttpMessageReader<?>> messageReaders;
-	
-	@Autowired
+    private final java.util.List<HttpMessageReader<?>> messageReaders;
+    
+    @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
-	
-	public ModifyHeaderFilter() {
+    
+    public ModifyHeaderFilter() {
         super(Config.class);
         this.messageReaders = HandlerStrategies.withDefaults().messageReaders();
     }
-	
-	public Boolean should(ServerWebExchange exchange) {
+    
+    public Boolean should(ServerWebExchange exchange) {
         if(exchange.getAttribute(GatewayConst.IS_ADMIN) == null) {
             return false;
         }
         return true;
     }
-	
-	public GatewayFilter apply(final Config config) {
+    
+    public GatewayFilter apply(final Config config) {
         return (exchange, chain) -> {
-        	if(!should(exchange)) {
+            if(!should(exchange)) {
                 return chain.filter(exchange);
             }
-        	log.info("ModifyHeaderFilter");
-        	ServerHttpRequest request = exchange.getRequest()
+            log.info("ModifyHeaderFilter");
+            ServerHttpRequest request = exchange.getRequest()
             .mutate()
             .header(GatewayConst.USER_ID_OBJECT, exchange.getAttribute(GatewayConst.USER_ID).toString())
             .build();
-        	
-        	return chain.filter(exchange.mutate().request(request).build());
+            
+            return chain.filter(exchange.mutate().request(request).build());
         };
     }
-	
-	public static class Config {
+    
+    public static class Config {
         private Class<?> bodyClass;
 
         public Class<?> getBodyClass() {

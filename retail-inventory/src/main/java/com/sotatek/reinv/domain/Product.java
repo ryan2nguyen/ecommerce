@@ -18,19 +18,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-	
-	public Long id;
+    
+    public Long id;
 
-	public String name;
-	
-	public Integer quantity;
-	
-	public Long price;
-	
-	public String description;
-	
-	public Long retailId;
-	
-	public List<ProductHistory> productHistories;
-	
+    public String name;
+    
+    public Integer quantity;
+    
+    public Long price;
+    
+    public String description;
+    
+    public Long retailId;
+    
+    public List<ProductHistory> productHistories;
+    
 }

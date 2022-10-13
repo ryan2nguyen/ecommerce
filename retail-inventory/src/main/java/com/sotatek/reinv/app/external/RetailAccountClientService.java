@@ -13,7 +13,7 @@ import feign.RequestLine;
 @FeignClient(name = "retail-account")
 public interface RetailAccountClientService {
 
-	@GetMapping(value = "/retail/find-by-retail-id")
-	public ResponseDataDto<?> findByRetailId(@RequestParam("retailId") Long retailId);
-	
+    @GetMapping(value = "/retail/find-by-retail-id")
+    public ResponseDataDto<?> findByRetailId(@RequestParam("retailId") Long retailId);
+    
 }

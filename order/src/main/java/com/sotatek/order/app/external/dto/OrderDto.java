@@ -5,7 +5,7 @@ import lombok.Builder;
 @Builder
 public class OrderDto {
 
-	public Long totalAmount;
-	
-	public Long orderId;
+    public Long totalAmount;
+    
+    public Long orderId;
 }

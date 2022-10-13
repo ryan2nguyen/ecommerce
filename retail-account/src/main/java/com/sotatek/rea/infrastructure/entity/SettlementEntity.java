@@ -24,19 +24,22 @@ import lombok.NoArgsConstructor;
 @Table(schema = "settlement")
 public class SettlementEntity {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-	
-	@Column(name = "createTime")
+    
+    @Column(name = "createTime")
     public Date createTime;
-	
-	@Column(name = "retailId")
-	public Long retailId;
-	
-	@Column(name = "state")
+    
+    @Column(name = "retailId")
+    public Long retailId;
+    
+    @Column(name = "state")
     public String state;
-	
-	
-	
+    
+    @Column(name = "orderAmount")
+    public long orderAmount;
+    
+    @Column(name = "retailAmount")
+    public long retailAmount;
 }

@@ -11,5 +11,5 @@ import com.sotatek.order.infrastructure.entity.OrderDetailEntity;
 
 @Repository
 public interface JpaOrderDetailRepository extends JpaRepository<OrderDetailEntity, Long> {
-		
+        
 }

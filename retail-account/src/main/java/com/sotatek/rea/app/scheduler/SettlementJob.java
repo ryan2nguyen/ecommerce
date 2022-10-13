@@ -16,24 +16,24 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Component
 public class SettlementJob {
-	
-	@Autowired
-	private SettlementService settlementService;
-	
-	@Autowired
-	private SettlementRepository settlementRepository;
-	
-	@Scheduled(cron = "0 0 1 * * ?")
-//	@Scheduled(fixedRate = 5000)
-	public void running() {
-		try {
-			List<Settlement> settlements = settlementService.jobHandle();
-			for(Settlement settlement: settlements) {
-				settlementRepository.save(settlement);
-			}
-			
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-	}
+    
+    @Autowired
+    private SettlementService settlementService;
+    
+    @Autowired
+    private SettlementRepository settlementRepository;
+    
+    @Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(fixedRate = 5000)
+    public void running() {
+        try {
+            List<Settlement> settlements = settlementService.jobHandle();
+            for(Settlement settlement: settlements) {
+                settlementRepository.save(settlement);
+            }
+            
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 }

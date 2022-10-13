@@ -4,7 +4,7 @@ import com.sotatek.prda.domain.Account;
 
 public interface AccountRepository {
 
-	public Account findByCustomerId(Long customerId);
-	
-	Account save(Account account);
+    public Account findByCustomerId(Long customerId);
+    
+    Account save(Account account);
 }

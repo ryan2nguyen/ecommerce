@@ -29,15 +29,15 @@ import lombok.NoArgsConstructor;
 @Table(schema = "account")
 public class AccountEntity {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-	
-	@ManyToOne
+    
+    @ManyToOne
     @JoinColumn(name = "customerId")
-	public CustomerEntity customer;
-	
-	@Column(name = "balance")
+    public CustomerEntity customer;
+    
+    @Column(name = "balance")
     public Long balance;
-	
+    
 }

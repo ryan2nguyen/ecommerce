@@ -5,6 +5,6 @@ import com.sotatek.prda.ws.dto.ResponseDataDto;
 
 public interface AccountService {
 
-	public ResponseDataDto<?> payOrder(OrderDto orderDto, Long customerId);
-	
+    public ResponseDataDto<?> payOrder(OrderDto orderDto, Long customerId);
+    
 }

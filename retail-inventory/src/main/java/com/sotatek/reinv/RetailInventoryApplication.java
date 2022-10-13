@@ -10,8 +10,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class RetailInventoryApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(RetailInventoryApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RetailInventoryApplication.class, args);
+    }
 
 }

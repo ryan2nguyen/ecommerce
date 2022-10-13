@@ -20,15 +20,15 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("retail")
 public class RetailController {
 
-	@Autowired
-	private RetailService retailService;
-	
-	@RequestMapping(value = "add", method = RequestMethod.POST)
+    @Autowired
+    private RetailService retailService;
+    
+    @RequestMapping(value = "add", method = RequestMethod.POST)
     public ResponseDataDto<?> retailAdd(@RequestBody List<RetailDto> retails) throws Exception {
         return retailService.add(retails);
     }
-	
-	@RequestMapping(value = "find-by-retail-id", method = RequestMethod.GET)
+    
+    @RequestMapping(value = "find-by-retail-id", method = RequestMethod.GET)
     public ResponseDataDto<?> findByRetailId(@RequestParam Long retailId) throws Exception {
         return retailService.findByRetailId(retailId);
     }

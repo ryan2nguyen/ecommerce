@@ -7,6 +7,6 @@ import com.sotatek.rea.ws.dto.ResponseDataDto;
 import com.sotatek.rea.ws.dto.SettlementDto;
 
 public interface SettlementService {
-	
-	public List<Settlement>  jobHandle() throws Exception;
+    
+    public List<Settlement>  jobHandle() throws Exception;
 }

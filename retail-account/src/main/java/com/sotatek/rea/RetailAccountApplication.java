@@ -12,8 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableFeignClients
 public class RetailAccountApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(RetailAccountApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RetailAccountApplication.class, args);
+    }
 
 }

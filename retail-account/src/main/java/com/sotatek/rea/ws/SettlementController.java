@@ -19,16 +19,16 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("settlement")
 public class SettlementController {
 
-	@Autowired
-	private SettlementService settlementService;
-	
-	@RequestMapping(value = "manual-trigger", method = RequestMethod.GET)
+    @Autowired
+    private SettlementService settlementService;
+    
+    @RequestMapping(value = "manual-trigger", method = RequestMethod.GET)
     public ResponseDataDto<?> jobTrigger() throws Exception {
-		try {
-			return new ResponseDataDto<List<Settlement>>(HttpStatus.OK, settlementService.jobHandle());
-		} catch (Exception e) {
-			return new ResponseDataDto<String>(HttpStatus.BAD_REQUEST, e.getMessage());
-		}
+        try {
+            return new ResponseDataDto<List<Settlement>>(HttpStatus.OK, settlementService.jobHandle());
+        } catch (Exception e) {
+            return new ResponseDataDto<String>(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
         
     }
 }

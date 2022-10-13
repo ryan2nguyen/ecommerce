@@ -25,26 +25,26 @@ import lombok.NoArgsConstructor;
 @Table(schema = "product")
 public class ProductEntity {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-	
-	@Column(name = "name")
-	public String name;
-	
-	@Column(name = "quantity")
-	public Integer quantity;
-	
-	@Column(name = "price")
-	public Long price;
-	
-	@Column(name = "description")
-	public String description;
-	
-	@Column(name = "retailId")
-	public Long retailId;
-	
-	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	public List<ProductHistoryEntity> productHistoryEntity;
-	
+    
+    @Column(name = "name")
+    public String name;
+    
+    @Column(name = "quantity")
+    public Integer quantity;
+    
+    @Column(name = "price")
+    public Long price;
+    
+    @Column(name = "description")
+    public String description;
+    
+    @Column(name = "retailId")
+    public Long retailId;
+    
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    public List<ProductHistoryEntity> productHistoryEntity;
+    
 }

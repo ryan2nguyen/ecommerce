@@ -13,7 +13,7 @@ import com.sotatek.prda.infrastructure.entity.CustomerEntity;
 
 @Repository
 public interface JpaCustomerRepository extends JpaRepository<CustomerEntity, Long> {
-	@QueryHints(value = {
+    @QueryHints(value = {
             @QueryHint(name = org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE, value = "" + Integer.MIN_VALUE),
             @QueryHint(name = org.hibernate.jpa.QueryHints.HINT_CACHEABLE, value = "false"),
             @QueryHint(name = org.hibernate.jpa.QueryHints.HINT_READONLY, value = "true")

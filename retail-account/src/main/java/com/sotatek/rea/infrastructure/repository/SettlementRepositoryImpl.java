@@ -14,31 +14,33 @@ import lombok.extern.log4j.Log4j2;
 @Component
 @Log4j2
 public class SettlementRepositoryImpl implements SettlementRepository{
-	
-	@Autowired
-	private JpaSettlementRepository jpaSettlementRepository;
-	
-	@Override
-	public Settlement save(Settlement settlement) {
-		// TODO Auto-generated method stub
-		return toDomain(jpaSettlementRepository.save(
-				SettlementEntity.builder()
-				.id(settlement.id)
-				.createTime(new Date())
-				.retailId(settlement.retailId)
-				.state(settlement.state)
-				.build()
-				));
-	}
-	
-	private Settlement toDomain(SettlementEntity entity) {
-		if(entity == null) return null;
-		return Settlement.builder()
-				   .id(entity.id)
-			       .createTime(entity.createTime)
-			       .retailId(entity.retailId)
-			       .state(entity.state)
-			       .build();
-	}
+    
+    @Autowired
+    private JpaSettlementRepository jpaSettlementRepository;
+    
+    @Override
+    public Settlement save(Settlement settlement) {
+        // TODO Auto-generated method stub
+        return toDomain(jpaSettlementRepository.save(
+                SettlementEntity.builder()
+                .createTime(new Date())
+                .retailId(settlement.retailId)
+                .state(settlement.state)
+                .orderAmount(settlement.orderAmount)
+                .retailAmount(settlement.retailAmount)
+                .build()
+                ));
+    }
+    
+    private Settlement toDomain(SettlementEntity entity) {
+        if(entity == null) return null;
+        return Settlement.builder()
+                   .createTime(entity.createTime)
+                   .retailId(entity.retailId)
+                   .state(entity.state)
+                   .orderAmount(entity.orderAmount)
+                   .retailAmount(entity.retailAmount)
+                   .build();
+    }
 
 }

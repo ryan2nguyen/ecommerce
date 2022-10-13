@@ -10,8 +10,8 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 @RequestMapping("/health")
 public class HealthCheckController {
-	
-	@RequestMapping(value = "", method = RequestMethod.GET)
+    
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String healthy() {
         return "true";
     }
