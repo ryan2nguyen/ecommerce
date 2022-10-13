@@ -83,13 +83,13 @@
 # Main flow
 
 1. Deposit for customer id=1 (use user's token as a representative)
-<pre> curl -X POST http://localhost:18000/pre-deposited-account/deposit -H "Content-Type: application/json" -H "Authorization: Bearer ddd0993fe9dfccfd6d7054f60f4db4df580581a73e3587aa543b6f8a6838947a" -d "{\"value\":600000}" </pre> 
+<pre> curl -X POST http://localhost:18000/pre-deposited-account/customer/deposit -H "Content-Type: application/json" -H "Authorization: Bearer ddd0993fe9dfccfd6d7054f60f4db4df580581a73e3587aa543b6f8a6838947a" -d "{\"value\":600000}" </pre> 
 2. Deposit for customer id=2 (use user's token as a representative)
-<pre>  curl -X POST http://localhost:18000/pre-deposited-account/deposit -H "Content-Type: application/json" -H "Authorization: Bearer fbdb8f91044939a2fd4e90d5b3dcce5f857bf38aecef5ef2951c717cee1771b5" -d "{\"value\":600000}"</pre> 
+<pre>  curl -X POST http://localhost:18000/pre-deposited-account/customer/deposit -H "Content-Type: application/json" -H "Authorization: Bearer fbdb8f91044939a2fd4e90d5b3dcce5f857bf38aecef5ef2951c717cee1771b5" -d "{\"value\":600000}"</pre> 
 3. Increase the product inventory for product id=1 (use retail's token as a representative)
-<pre>  curl -X POST http://localhost:18000/retail-inventory/increate-inventory -H "Content-Type: application/json" -H "Authorization: Bearer fb614f798424df7a50464ac8ec16a42d97e8633a474e4c4008cc191c7dbe4ee8" -d "{\"productId\":1,\"quantity\":10}"</pre> 
+<pre>  curl -X POST http://localhost:18000/retail-inventory/product/increase-inventory -H "Content-Type: application/json" -H "Authorization: Bearer fb614f798424df7a50464ac8ec16a42d97e8633a474e4c4008cc191c7dbe4ee8" -d "{\"productId\":1,\"quantity\":10}"</pre> 
 4. Buy product flow
-<pre>  curl -X POST http://localhost:18000/retail-inventory/buy-product -H "Content-Type: application/json" -H "Authorization: Bearer ddd0993fe9dfccfd6d7054f60f4db4df580581a73e3587aa543b6f8a6838947a" -d "[{\"productId\": 1,\"quantity\": 2},{\"productId\": 2,\"quantity\": 3},{\"productId\": 3,\"quantity\": 2}]"</pre> 
+<pre>  curl -X POST http://localhost:18000/order/create-order -H "Content-Type: application/json" -H "Authorization: Bearer ddd0993fe9dfccfd6d7054f60f4db4df580581a73e3587aa543b6f8a6838947a" -d "[{\"productId\": 1,\"quantity\": 2},{\"productId\": 2,\"quantity\": 3},{\"productId\": 3,\"quantity\": 2}]"</pre> 
 5. Settlement (manual trigger option)
 <pre> curl -X GET http://localhost:18000/retail-account/settlement/manual-trigger -H "Authorization: Bearer ab53273e-4521-11ed-b878-0242ac120002"</pre>
 
