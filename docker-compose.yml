@@ -39,21 +39,31 @@ services:
     build: gateway/.
     container_name: javatesting-gateway
     environment:
-      REDIS_HOST: javatesting-redis
-      REDIS_PORT: 6379
-      CONSUL_HOST: javatesting-consul
-      CONSUL_PORT: 8500
+      GATEWAY_PORT: 8080
+      GATEWAY_REDIS_HOST: javatesting-redis
+      GATEWAY_REDIS_PORT: 6379
+      GATEWAY_HOSTNAME: gateway
+      GATEWAY_CONSUL_HOST: javatesting-consul
+      GATEWAY_CONSUL_PORT: 8500
+      GATEWAY_CUSTOMER_URL: /order/create-order,/pre-deposited-account/customer/deposit
+      GATEWAY_RETAIL_URL: /retail-inventory/product/add,/retail-inventory/product/increase-inventory
     ports:
       - "18000:8080"
   order:
     build: order/.
     container_name: javatesting-order
     environment:
-      CONSUL_HOST: javatesting-consul
-      CONSUL_PORT: 8500
-      MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_order
-      MYSQL_USERNAME: root
-      MYSQL_PASSWORD: 1
+      ORDER_PORT: 8082
+      ORDER_HOSTNAME: order
+      ORDER_GATEWAY_URL: http://gateway:8080
+      ORDER_PRDA_HOSTNAME: pre-deposited-account
+      ORDER_REA_HOSTNAME: retail-account
+      ORDER_REINV_HOSTNAME: retail-inventory
+      ORDER_CONSUL_HOST: javatesting-consul
+      ORDER_CONSUL_PORT: 8500
+      ORDER_MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_order
+      ORDER_MYSQL_USERNAME: root
+      ORDER_MYSQL_PASSWORD: 1
     depends_on:
       mysql:
         condition: service_healthy
@@ -61,13 +71,15 @@ services:
     build: pre-deposited-account/.
     container_name: javatesting-pre_deposited_account
     environment:
-      REDIS_HOST: javatesting-redis
-      REDIS_PORT: 6379
-      CONSUL_HOST: javatesting-consul
-      CONSUL_PORT: 8500
-      MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_predepositedaccount
-      MYSQL_USERNAME: root
-      MYSQL_PASSWORD: 1
+      PRDA_PORT: 8081
+      PRDA_HOSTNAME: pre-deposited-account
+      PRDA_REDIS_HOST: javatesting-redis
+      PRDA_REDIS_PORT: 6379
+      PRDA_CONSUL_HOST: javatesting-consul
+      PRDA_CONSUL_PORT: 8500
+      PRDA_MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_predepositedaccount
+      PRDA_MYSQL_USERNAME: root
+      PRDA_MYSQL_PASSWORD: 1
     depends_on:
       mysql:
         condition: service_healthy
@@ -75,13 +87,18 @@ services:
     build: retail-account/.
     container_name: javatesting-retail_account
     environment:
-      REDIS_HOST: javatesting-redis
-      REDIS_PORT: 6379
-      CONSUL_HOST: javatesting-consul
-      CONSUL_PORT: 8500
-      MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_retailaccount
-      MYSQL_USERNAME: root
-      MYSQL_PASSWORD: 1
+      REA_PORT: 8083
+      REA_HOSTNAME: retail-account
+      REA_GATEWAY_URL: http://gateway:8080
+      REA_ORDER_HOSTNAME: order
+      REA_REINV_HOSTNAME: retail-inventory
+      REA_REDIS_HOST: javatesting-redis
+      REA_REDIS_PORT: 6379
+      REA_CONSUL_HOST: javatesting-consul
+      REA_CONSUL_PORT: 8500
+      REA_MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_retailaccount
+      REA_MYSQL_USERNAME: root
+      REA_MYSQL_PASSWORD: 1
     depends_on:
       mysql:
         condition: service_healthy
@@ -89,14 +106,15 @@ services:
     build: retail-inventory/.
     container_name: javatesting-retail_inventory
     environment:
-      REDIS_HOST: javatesting-redis
-      REDIS_PORT: 6379
-      CONSUL_HOST: javatesting-consul
-      CONSUL_PORT: 8500
-      MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_retailinventory
-      MYSQL_USERNAME: root
-      MYSQL_PASSWORD: 1
-      BASE_GATEWAY: http://gateway:8080
+      REINV_PORT: 8084
+      REINV_HOSTNAME: retail-inventory
+      REINV_GATEWAY_URL: http://gateway:8080
+      REINV_REA_HOSTNAME: retail-account
+      REINV_CONSUL_HOST: javatesting-consul
+      REINV_CONSUL_PORT: 8500
+      REINV_MYSQL_URL: jdbc:mysql://javatesting-mysql:3306/retailselling_retailinventory
+      REINV_MYSQL_USERNAME: root
+      REINV_MYSQL_PASSWORD: 1
     depends_on:
       mysql:
         condition: service_healthy
