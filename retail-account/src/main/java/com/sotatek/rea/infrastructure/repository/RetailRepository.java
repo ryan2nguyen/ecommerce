@@ -1,12 +1,13 @@
 package com.sotatek.rea.infrastructure.repository;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import com.sotatek.rea.domain.Retail;
 
 public interface RetailRepository {
 
-	public Stream<Retail> getAll();
+	public List<Retail> getAll();
 	
     public Retail findByToken(String token);
 	

@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService{
 	public ResponseDataDto<?> increateInventory(ProductDto productDto) {
 		try {
 			Product savedProduct = productReposity.findById(productDto.productId);
-			savedProduct.quantity -= productDto.quantity;
+			savedProduct.quantity += productDto.quantity;
 			if(savedProduct.quantity >= 0) {
 				productReposity.save(savedProduct);
 				

@@ -28,20 +28,28 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	@Override
 	public Customer save(Customer customer) {
 		// TODO Auto-generated method stub
-		return toDomain(jpaCustomerRepository.save(CustomerEntity.builder().email(customer.email).name(customer.name).phone(customer.phone).token(customer.token).build()));
+		return toDomain(jpaCustomerRepository.save(CustomerEntity.builder()
+				.id(customer.id)
+				.email(customer.email)
+				.name(customer.name)
+				.phone(customer.phone)
+				.token(customer.token)
+				.build()));
 	}
 	
 	@Override
-	public Stream<Customer> getAll() {
-		return jpaCustomerRepository.getAll().map(customer -> toDomain(customer));
+	public List<Customer> getAll() {
+		return jpaCustomerRepository.findAll().stream().map(customer -> toDomain(customer)).collect(Collectors.toList());
 	}
 	
 	private Customer toDomain(CustomerEntity customerEntity) {
+		if(customerEntity == null) return null;
 		return Customer.builder()
 				   .id(customerEntity.id)
 				   .email(customerEntity.email)
 				   .name(customerEntity.name)
 				   .phone(customerEntity.phone)
+				   .token(customerEntity.token)
 				   .accounts(customerEntity.accountEntityies.stream()
 				      .map(account -> Account.builder()
 				    		  .balance(account.balance)

@@ -1,10 +1,6 @@
 package com.sotatek.prda.app.scheduler;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,11 +8,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sotatek.prda.domain.Customer;
-import com.sotatek.prda.infrastructure.repository.AccountRepository;
 import com.sotatek.prda.infrastructure.repository.CustomerRepository;
 
 import lombok.extern.log4j.Log4j2;
@@ -34,18 +25,12 @@ public class SyncCustomerJob {
 	@Scheduled(fixedRate = 5000)
     @Transactional(readOnly = true)
     public void running() {
-		ObjectMapper mapper = new ObjectMapper();  
-		try (Stream<Customer> customerStream = customerRepository.getAll()) {
-            List<Customer> listCustomer = customerStream.collect(Collectors.toList());
-            listCustomer.forEach(item -> {
-				try {
-					redisTemplate.opsForValue().set(item.token, mapper.writeValueAsString(new User(item.id, "customer")), 5, TimeUnit.MINUTES);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
+		try {
+			customerRepository.getAll().forEach(customer -> {
+				redisTemplate.opsForValue().set(customer.token, User.builder().userId(customer.id).type("customer").build().toString(), 5, TimeUnit.MINUTES);
 			});
-        } catch (Exception e) {
-            log.error("[SCHEDULE] " + e);
-        }
+		} catch (Exception e) {
+			log.error("[SCHEDULE] " + e);
+		}
 	}
 }

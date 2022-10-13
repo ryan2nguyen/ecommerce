@@ -11,5 +11,5 @@ public interface CustomerRepository {
 	
 	public Customer save(Customer customer);
 	
-	public Stream<Customer> getAll();
+	public List<Customer> getAll();
 }

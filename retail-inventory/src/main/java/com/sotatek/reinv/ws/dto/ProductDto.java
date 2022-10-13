@@ -4,11 +4,11 @@ import javax.persistence.Column;
 
 public class ProductDto {
 	
+	public Integer quantity;
+	
 	public Long productId;
 	
     public String name;
-	
-	public Integer quantity;
 	
 	public Long price;
 	

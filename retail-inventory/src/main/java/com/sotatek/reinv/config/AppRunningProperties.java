@@ -18,4 +18,5 @@ public class AppRunningProperties {
     
     private String baseUrl;
     
+    private String retailAccountHostname;
 }

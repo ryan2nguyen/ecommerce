@@ -24,6 +24,7 @@ public class ProductHistoryRepositoryImpl implements ProductHistoryReposity {
 		// TODO Auto-generated method stub
 		return toDomain(jpaProductHistoryRepository.save(
 				ProductHistoryEntity.builder()
+				.id(productHistory.id)
 				.createTime(productHistory.createTime)
 				.orderId(productHistory.orderId)
 				.quantity(productHistory.quantity)
@@ -36,6 +37,7 @@ public class ProductHistoryRepositoryImpl implements ProductHistoryReposity {
 	}
 
 	private ProductHistory toDomain(ProductHistoryEntity productHistoryEntity) {
+		if(productHistoryEntity == null) return null;
 		return ProductHistory.builder()
 				.id(productHistoryEntity.id)
 				.createTime(productHistoryEntity.createTime)

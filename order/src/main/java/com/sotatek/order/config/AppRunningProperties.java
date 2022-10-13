@@ -18,4 +18,10 @@ public class AppRunningProperties {
     
     private String baseUrl;
     
+    private String preDepositedAccountHostname;
+    
+    private String retailAccountHostname;
+    
+    private String retailInventoryHostname;
+    
 }

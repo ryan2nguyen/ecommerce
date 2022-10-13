@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Settlement {
+	
+	public Long id;
 
     public Date createTime;
 	

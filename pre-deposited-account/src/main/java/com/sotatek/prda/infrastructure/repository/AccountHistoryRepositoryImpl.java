@@ -24,6 +24,7 @@ public class AccountHistoryRepositoryImpl implements AccountHistoryRepository{
 	public AccountHistory save(AccountHistory accountHistory) {
 		return toDomain(jpaAccountHistoryRepository.save(
 			       AccountHistoryEntity.builder()
+			       .id(accountHistory.id)
 			       .amount(accountHistory.amount)
 			       .createTime(new Date())
 			       .customer(jpaCustomerRepository.findById(accountHistory.customer.id).get())
@@ -34,7 +35,9 @@ public class AccountHistoryRepositoryImpl implements AccountHistoryRepository{
 	}
 	
 	private AccountHistory toDomain(AccountHistoryEntity entity) {
+		if(entity == null) return null;
 		return AccountHistory.builder()
+				   .id(entity.id)
 			       .amount(entity.amount)
 			       .createTime(new Date())
 			       .type(entity.type)

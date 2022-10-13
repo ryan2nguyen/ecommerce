@@ -45,6 +45,6 @@ public class ProductEntity {
 	public Long retailId;
 	
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	public List<ProductEntity> productEntities;
+	public List<ProductHistoryEntity> productHistoryEntity;
 	
 }

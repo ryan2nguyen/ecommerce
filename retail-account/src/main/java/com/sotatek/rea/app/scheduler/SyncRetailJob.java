@@ -1,9 +1,6 @@
 package com.sotatek.rea.app.scheduler;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,9 +8,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sotatek.rea.domain.Retail;
 import com.sotatek.rea.infrastructure.repository.RetailRepository;
 
 import lombok.extern.log4j.Log4j2;
@@ -31,15 +25,9 @@ public class SyncRetailJob {
 	@Scheduled(fixedRate = 5000)
     @Transactional(readOnly = true)
     public void running() {
-		ObjectMapper mapper = new ObjectMapper();  
-		try (Stream<Retail> retailStream = retailRepository.getAll()) {
-            List<Retail> listRetail = retailStream.collect(Collectors.toList());
-            listRetail.forEach(item -> {
-				try {
-					redisTemplate.opsForValue().set(item.token, mapper.writeValueAsString(new User(item.id, "retail")), 5, TimeUnit.MINUTES);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
+		try {
+			retailRepository.getAll().forEach(retail -> {
+				redisTemplate.opsForValue().set(retail.token, User.builder().userId(retail.id).type("retail").build().toString(), 5, TimeUnit.MINUTES);
 			});
         } catch (Exception e) {
             log.error("[SCHEDULE] " + e);

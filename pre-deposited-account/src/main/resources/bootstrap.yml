@@ -2,21 +2,21 @@ spring:
   cloud:
     consul:
       discovery:
-#        prefer-ip-address: true
-#        ip-address: 192.168.65.2
-        hostname: pre-deposited-account
+        prefer-ip-address: true
+        ip-address: 10.2.51.3
+#        hostname: ${PRDA_HOSTNAME}
 
-        port: 8081
+        port: ${PRDA_PORT}
         healthCheckPath: /health
-      host: ${CONSUL_HOST}
-      port: ${CONSUL_PORT}
+      host: ${PRDA_CONSUL_HOST}
+      port: ${PRDA_CONSUL_PORT}
       enabled: true
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: ${PRDA_MYSQL_URL}
+    username: ${PRDA_MYSQL_USERNAME}
+    password: ${PRDA_MYSQL_PASSWORD}
     driver-class-name: com.mysql.jdbc.Driver

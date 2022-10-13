@@ -2,21 +2,21 @@ spring:
   cloud:
     consul:
       discovery:
-#        prefer-ip-address: true
-#        ip-address: 192.168.65.2
-        hostname: order
+        prefer-ip-address: true
+        ip-address: 10.2.51.3
+#        hostname: ${ORDER_HOSTNAME}
 
-        port: 8082
+        port: ${ORDER_PORT}
         healthCheckPath: /health
-      host: ${CONSUL_HOST}
-      port: ${CONSUL_PORT}
+      host: ${ORDER_CONSUL_HOST}
+      port: ${ORDER_CONSUL_PORT}
       enabled: true
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: ${ORDER_MYSQL_URL}
+    username: ${ORDER_MYSQL_USERNAME}
+    password: ${ORDER_MYSQL_PASSWORD}
     driver-class-name: com.mysql.jdbc.Driver

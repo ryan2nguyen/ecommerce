@@ -2,12 +2,12 @@ spring:
   cloud:
     consul:
       discovery:
-#        prefer-ip-address: true
-#        ip-address: 192.168.65.2
-        hostname: gateway
+        prefer-ip-address: true
+        ip-address: 192.168.65.2
+#        hostname: ${GATEWAY_HOSTNAME}
 
-        port: 8080
+        port: ${GATEWAY_PORT}
         healthCheckPath: /health
-      host: ${CONSUL_HOST}
-      port: ${CONSUL_PORT}
+      host: ${GATEWAY_CONSUL_HOST}
+      port: ${GATEWAY_CONSUL_PORT}
       enabled: true

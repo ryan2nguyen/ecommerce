@@ -1,14 +1,14 @@
 
 server:
-  port: 8082
+  port: ${ORDER_PORT}
   
 spring:
   application:
-    name: order
-    base-url: http://gateway:8080
-    pre-deposited-account-context: http://pre-deposited-account:8081
-    retail-account-context: http://retail-account:8083
-    retail-inventory-context: http://retail-inventory:8084
+    name: ${ORDER_HOSTNAME}
+    base-url: ${ORDER_GATEWAY_URL}
+    preDepositedAccountHostname: ${ORDER_PRDA_HOSTNAME}
+    retailAccountHostname: ${ORDER_REA_HOSTNAME}
+    retailInventoryHostname: ${ORDER_REINV_HOSTNAME}
   jpa:
     hibernate:
       naming:

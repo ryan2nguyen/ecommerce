@@ -48,6 +48,7 @@ public class OrderRepositoryImpl implements OrderRepository{
 		
 		List<OrderDetailEntity> orderDetailEntities = order.orderDetails.stream()
 				      .map(detail -> OrderDetailEntity.builder()
+				    	  .id(detail.id)
 				          .price(detail.price)
 				          .productId(detail.productId)
 				          .quantity(detail.quantity)
@@ -59,13 +60,16 @@ public class OrderRepositoryImpl implements OrderRepository{
 	}
 	
 	private Order toDomain(OrderEntity orderEntity) {
+		if(orderEntity == null) return null;
 		return Order.builder()
+				   .id(orderEntity.id)
 			       .customerId(orderEntity.customerId)
 				   .state(orderEntity.state)
 				   .totalAmount(orderEntity.totalAmount)
 				   .createTime(orderEntity.createTime)
 				   .orderDetails(orderEntity.orderDetails.stream()
 				      .map(detail -> OrderDetail.builder()
+				    	  .id(detail.id)
 				          .price(detail.getPrice())
 				          .productId(detail.productId)
 				          .quantity(detail.quantity)

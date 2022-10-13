@@ -1,13 +1,13 @@
 
 server:
-  port: 8081
+  port: ${PRDA_PORT}
   
 spring:
   application:
-    name: pre-deposited-account
+    name: ${PRDA_HOSTNAME}
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    host: ${PRDA_REDIS_HOST}
+    port: ${PRDA_REDIS_PORT}
   jpa:
     hibernate:
       naming:

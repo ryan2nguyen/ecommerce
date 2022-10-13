@@ -1,14 +1,16 @@
 
 server:
-  port: 8083
+  port: ${REA_PORT}
   
 spring:
   application:
-    name: retail-account
-    baseUrl: http://gateway:8080
+    name: ${REA_HOSTNAME}
+    baseUrl: ${REA_GATEWAY_URL}
+    orderHostname: ${REA_ORDER_HOSTNAME}
+    retailInventoryHostname: ${REA_REINV_HOSTNAME}
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    host: ${REA_REDIS_HOST}
+    port: ${REA_REDIS_PORT}
   jpa:
     hibernate:
       naming:

@@ -1,13 +1,13 @@
 
 server:
-  port: 8080
+  port: ${GATEWAY_PORT}
   
 spring:
   application:
-    name: gateway
+    name: ${GATEWAY_HOSTNAME}
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    host: ${GATEWAY_REDIS_HOST}
+    port: ${GATEWAY_REDIS_PORT}
   cloud:
     loadbalancer:
       ribbon:

@@ -23,6 +23,7 @@ public class SettlementRepositoryImpl implements SettlementRepository{
 		// TODO Auto-generated method stub
 		return toDomain(jpaSettlementRepository.save(
 				SettlementEntity.builder()
+				.id(settlement.id)
 				.createTime(new Date())
 				.retailId(settlement.retailId)
 				.state(settlement.state)
@@ -31,7 +32,9 @@ public class SettlementRepositoryImpl implements SettlementRepository{
 	}
 	
 	private Settlement toDomain(SettlementEntity entity) {
+		if(entity == null) return null;
 		return Settlement.builder()
+				   .id(entity.id)
 			       .createTime(entity.createTime)
 			       .retailId(entity.retailId)
 			       .state(entity.state)

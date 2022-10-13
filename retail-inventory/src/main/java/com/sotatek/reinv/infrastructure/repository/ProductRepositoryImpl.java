@@ -23,14 +23,13 @@ public class ProductRepositoryImpl implements ProductReposity{
 
 	@Override
 	public Product findById(Long id) {
-		// TODO Auto-generated method stub
 		return toDomain(jpaProductRepository.findById(id).get());
 	}
 
 	@Override
 	public Product save(Product prodcut) {
-		// TODO Auto-generated method stub
 		return toDomain(jpaProductRepository.save(ProductEntity.builder()
+				.id(prodcut.id)
 				.description(prodcut.description)
 				.name(prodcut.name)
 				.price(prodcut.price)
@@ -40,7 +39,9 @@ public class ProductRepositoryImpl implements ProductReposity{
 	}
 	
 	private Product toDomain(ProductEntity productEntity) {
+		if(productEntity == null) return null;
 		return Product.builder()
+				.id(productEntity.id)
 				.description(productEntity.description)
 				.id(productEntity.id)
 				.name(productEntity.name)

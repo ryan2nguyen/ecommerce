@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.alibaba.fastjson.JSON;
 
 import lombok.AllArgsConstructor;
@@ -43,10 +46,12 @@ public class CustomerEntity {
     @Column(name = "token")
     public String token;
     
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
 	public List<AccountEntity> accountEntityies;
     
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
 	public List<AccountHistoryEntity> accountHistoryEntityies;
     
     @Override

@@ -71,15 +71,16 @@ public class OrderServiceImpl implements OrderService {
 			Long totalAmount = 0L;
 			ResponseDataDto resultProducts = retailInventoryClientService.fetchPriceById(
 					orderDetails.stream().map(detail -> ProductDto.builder()
-							.id(detail.productId)
+							.productId(detail.productId)
 							.quantity(detail.quantity)
 							.build()).collect(Collectors.toList()));
 			if(resultProducts.code != HttpStatus.OK) {
 				throw new Exception(resultProducts.data.toString());
 			}
 			List<ProductDto> productDtos = (List<ProductDto>) resultProducts.data;
+			
 			for (OrderDetailDto orderDetail : orderDetails) {
-                orderDetail.price = productDtos.stream().filter(product -> product.id == orderDetail.productId).findFirst().get().price;
+                orderDetail.price = productDtos.stream().filter(product -> product.productId == orderDetail.productId).findFirst().get().price;
 				
                 totalAmount += orderDetail.price * orderDetail.quantity;
 			}

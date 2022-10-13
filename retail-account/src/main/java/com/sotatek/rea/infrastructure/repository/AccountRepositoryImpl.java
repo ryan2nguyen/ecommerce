@@ -39,6 +39,7 @@ public class AccountRepositoryImpl implements AccountRepository{
 		// TODO Auto-generated method stub
 		return toDomain(jpaAccountRepository.save(
 			       AccountEntity.builder()
+			       .id(account.id)
 			       .balance(account.balance)
 			       .retail(jpaRetailRepository.findById(account.retail.id).get())
 			       .build()
@@ -46,7 +47,9 @@ public class AccountRepositoryImpl implements AccountRepository{
 	}
 	
 	private Account toDomain(AccountEntity accountEntity) {
+		if(accountEntity == null) return null;
 		return Account.builder()
+				.id(accountEntity.id)
 				.balance(accountEntity.balance)
 				.build();
 	}

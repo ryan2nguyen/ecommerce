@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountHistory {
+	
+	public Long id;
 
     public String type;
 	

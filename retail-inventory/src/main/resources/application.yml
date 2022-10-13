@@ -1,11 +1,12 @@
 
 server:
-  port: 8084
+  port: ${REINV_PORT}
   
 spring:
   application:
-    name: retail-inventory
-    baseUrl: ${BASE_GATEWAY}
+    name: ${REINV_HOSTNAME}
+    baseUrl: ${REINV_GATEWAY_URL}
+    retailAccountHostname: ${REINV_REA_HOSTNAME}
   jpa:
     hibernate:
       naming:

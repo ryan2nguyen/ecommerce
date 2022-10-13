@@ -8,7 +8,7 @@
 		<version>2.7.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.sotatek.order</groupId>
+	<groupId>com.sotatek.testing</groupId>
 	<artifactId>order</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>order</name>
@@ -68,12 +68,8 @@
 		    <artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>io.github.openfeign</groupId>
-		    <artifactId>feign-okhttp</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>io.github.openfeign</groupId>
-		    <artifactId>feign-gson</artifactId>
+		   <groupId>org.springframework.cloud</groupId>
+		   <artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
 	</dependencies>
 	
