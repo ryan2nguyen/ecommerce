@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
 			List<ProductDto> productDtos = (List<ProductDto>) resultProducts.data;
 			
 			for (OrderDetailDto orderDetail : orderDetails) {
-                orderDetail.price = productDtos.stream().filter(product -> product.productId == orderDetail.productId).findFirst().get().price;
+                orderDetail.price = productDtos.stream().filter(product -> product.productId == orderDetail.productId).map(product -> orderDetail.price = product.price);
 				
                 totalAmount += orderDetail.price * orderDetail.quantity;
 			}
